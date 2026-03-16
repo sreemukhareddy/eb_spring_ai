@@ -1,6 +1,8 @@
 package com.eazybytes.openai.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.openai.api.OpenAiApi.ChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,9 @@ public class ChatController {
 						If a user asks for help with anything outside of these topics,
 						kindly reply them that you can assist only related to HR policies and queries.
 						""")
+				.options(OpenAiChatOptions.builder()
+						.model(ChatModel.GPT_5_MINI).build()
+						)
 				.user(message)
 				.call()
 				.content();

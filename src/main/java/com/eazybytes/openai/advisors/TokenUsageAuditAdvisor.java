@@ -30,7 +30,7 @@ public class TokenUsageAuditAdvisor implements CallAdvisor {
 			Integer totalTokens = usage.getTotalTokens();
 			log.info("Token usage is " + totalTokens);
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		return chatClientResponse;
 	}
