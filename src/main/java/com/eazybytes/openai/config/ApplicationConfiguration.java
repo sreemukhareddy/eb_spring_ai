@@ -43,8 +43,9 @@ public class ApplicationConfiguration {
 	@Bean
 	public ChatClient chatMemoryChatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
 		Advisor messageChatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
+		Advisor tokenUsageAdvisor = new TokenUsageAuditAdvisor();
 		return chatClientBuilder
-				.defaultAdvisors(new SimpleLoggerAdvisor(), messageChatMemoryAdvisor)
+				.defaultAdvisors(new SimpleLoggerAdvisor(), messageChatMemoryAdvisor, tokenUsageAdvisor)
 				.build();
 	}
 }
