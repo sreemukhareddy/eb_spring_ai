@@ -28,11 +28,14 @@ public class RagController {
 	Resource promptTemplate;
 	
 	@Value("classpath:/promptTemplates/hrPromptRagTemplate.st")
-	Resource hrSystemTemplate;	
+	Resource hrSystemTemplate;
+	
+	private final ChatClient webSearchRAGChatClient;
 
-	public RagController(@Qualifier("chatMemoryChatClient") ChatClient chatClient, VectorStore vectorStore) {
+	public RagController(@Qualifier("chatMemoryChatClient") ChatClient chatClient, VectorStore vectorStore, @Qualifier("webSearchRAGChatClient") ChatClient webSearchRAGChatClient) {
 		this.chatClient = chatClient;
 		this.vectorStore = vectorStore;
+		this.webSearchRAGChatClient = webSearchRAGChatClient;
 	}
 	
 	@GetMapping("/random/chat")
@@ -64,6 +67,7 @@ public class RagController {
 	@GetMapping("/document/chat")
 	public ResponseEntity<?> document(@RequestParam("message")String message, @RequestParam("username")String username) {
 		
+		/*
 		SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.5)
 		.build();
 		
@@ -72,11 +76,28 @@ public class RagController {
 		String similarContext = similarDocs.stream()
 				   .map(Document::getText)
 				   .collect(Collectors.joining(System.lineSeparator()));
+		*/
 		
-		String answer = chatClient.prompt().system(promptSystemSpec -> {
-			promptSystemSpec.text(hrSystemTemplate)
-			.param("documents", similarContext);
-		})
+		String answer = chatClient.prompt()
+				/*.system(promptSystemSpec -> {
+					promptSystemSpec.text(hrSystemTemplate)
+									.param("documents", similarContext);
+				})*/
+		.advisors(advisorSpec -> {
+					advisorSpec.param(ChatMemory.CONVERSATION_ID, username);
+				})
+		.user(message)
+		.call()
+		.content();
+		
+		return ResponseEntity.ok(answer);
+	}
+	
+	@GetMapping("/web-search/chat")
+	public ResponseEntity<?> webSearchChat(@RequestParam("message")String message, @RequestParam("username")String username) {
+		
+		
+		String answer = webSearchRAGChatClient.prompt()
 		.advisors(advisorSpec -> {
 					advisorSpec.param(ChatMemory.CONVERSATION_ID, username);
 				})
