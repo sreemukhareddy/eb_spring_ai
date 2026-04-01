@@ -29,7 +29,7 @@ public class HrPolicyLoader {
 	public void loadPdfIntoVectorStore() {
 		TikaDocumentReader tikaDocumentReader = new TikaDocumentReader(policyFile);
 		List<Document> docs = tikaDocumentReader.get();
-		TextSplitter tokenTextSplitter = TokenTextSplitter.builder().withChunkSize(100).withMaxNumChunks(400).build();
+		TextSplitter tokenTextSplitter = TokenTextSplitter.builder().withChunkSize(200).withMaxNumChunks(400).build();
 		vectorStore.add(tokenTextSplitter.split(docs));
 	}
 }
