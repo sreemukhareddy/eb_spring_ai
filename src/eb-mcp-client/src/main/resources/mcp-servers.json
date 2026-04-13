@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+	"github": {
+	    "command": "docker",
+	    "args": [
+	    "run",
+	    "-i",
+	    "--rm",
+	    "-e",
+	    "GITHUB_PERSONAL_ACCESS_TOKEN",
+	    "-e",
+	    "GITHUB_HOST",
+	    "ghcr.io/github/github-mcp-server"
+	    ],
+	    "env": {
+	        "GITHUB_PERSONAL_ACCESS_TOKEN": "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",
+	        "GITHUB_HOST": "https://github.com/sreemukhareddy"
+	    }
+	}
+  }
+}
