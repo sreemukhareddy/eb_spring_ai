@@ -1,0 +1,12 @@
+{
+  "mcpServers": [
+    {
+      "name": "filesystem",
+      "command": "D:/Nodejs/node.exe",
+      "args": [
+        "D:/Nodejs/node_modules/@modelcontextprotocol/server-filesystem/dist/index.js",
+        "D:/java_spring/mcp"
+      ]
+    }
+  ]
+}
